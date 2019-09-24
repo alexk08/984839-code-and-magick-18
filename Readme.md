@@ -1,7 +1,8 @@
 # Учебный проект «Код и Магия» [![Build status][travis-image]][travis-url]
 
 * Студент: [Александр Красильников](https://up.htmlacademy.ru/javascript/18/user/984839).
-* Наставник: `Неизвестно`.
+* Наставник: [Антон Попов](https://up.htmlacademy.ru/javascript/18/user/78239).
+
 
 ---
 
