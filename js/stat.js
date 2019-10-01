@@ -7,8 +7,12 @@ var CLOUD_Y = 10;
 var GAP = 10;
 var FONT_GAP = 15;
 var TEXT_WIDTH = 50;
-var BAR_HEIGHT = 20;
+// var BAR_HEIGHT = 20;
 var barWidth = CLOUD_WIDTH - GAP - TEXT_WIDTH - GAP;
+
+var INDENT = 50;
+var BAR_WIDTH = 40;
+var BAR_HEIGHT = 150;
 
 var renderCloud = function(ctx, x, y, color) {
   ctx.fillStyle = color;
