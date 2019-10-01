@@ -6,17 +6,19 @@ var CLOUD_X = 100;
 var CLOUD_Y = 10;
 var GAP = 10;
 var FONT_GAP = 15;
-var TEXT_WIDTH = 50;
-// var BAR_HEIGHT = 20;
-var barWidth = CLOUD_WIDTH - GAP - TEXT_WIDTH - GAP;
-
-var INDENT = 50;
+var INDENT = 20;
+var SPACING = 50;
 var BAR_WIDTH = 40;
 var BAR_HEIGHT = 150;
 
 var renderCloud = function(ctx, x, y, color) {
   ctx.fillStyle = color;
   ctx.fillRect(x, y, CLOUD_WIDTH, CLOUD_HEIGHT);
+};
+
+var renderText = function(ctx, color, text, x, y) {
+  ctx.fillStyle = color;
+  ctx.fillText(text, x, y);
 };
 
 var getMaxElement = function(arr) {
@@ -31,19 +33,33 @@ var getMaxElement = function(arr) {
   return maxElement;
 };
 
+var getText = function(ctx, strings) {
+  for (var i = 0; i < strings.length; i++) {
+    renderText(ctx, '#000', strings[i], CLOUD_X + INDENT, CLOUD_Y + INDENT + FONT_GAP * (i + 1));
+  }
+};
+
 window.renderStatistics = function(ctx, players, times) {
   renderCloud(ctx, CLOUD_X + GAP, CLOUD_Y + GAP, 'rgba(0, 0, 0, 0.7)');
   renderCloud(ctx, CLOUD_X, CLOUD_Y, '#fff');
 
-  ctx.fillStyle = '#000';
-  ctx.font = '16px PT Mono';
-  ctx.fillText('Ура вы победили!', CLOUD_X + GAP, CLOUD_Y + GAP + FONT_GAP);
-  ctx.fillText('Список результатов:', CLOUD_X + GAP, CLOUD_Y + GAP + FONT_GAP*2);
+  getText(ctx, ['Ура вы победили!', 'Список результатов:']);
 
   var maxTime = getMaxElement(times);
 
   for (var i = 0; i < players.length; i++) {
-    ctx.fillText(players[i], CLOUD_X + GAP, CLOUD_Y + GAP + FONT_GAP + (GAP + BAR_HEIGHT) * i);
-    ctx.fillRect(CLOUD_X + GAP + TEXT_WIDTH, CLOUD_Y + GAP + (GAP + BAR_HEIGHT) * i, (barWidth * times[i]) / maxTime, BAR_HEIGHT);
+    var barX = CLOUD_X + SPACING + (BAR_WIDTH + SPACING) * i;
+    var barY = CLOUD_Y + BAR_HEIGHT * (1.5 - times[i]/maxTime);
+
+    renderText(ctx, '#000', players[i], barX, CLOUD_Y + CLOUD_HEIGHT - FONT_GAP);
+    renderText(ctx, '#000', parseInt(times[i]), barX, CLOUD_Y + barY - FONT_GAP);
+
+    if (players[i] === 'Вы') {
+      ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+    } else {
+      ctx.fillStyle = 'hsl(240, ' + 100 * Math.random() + '%, 50%)';
+    }
+
+    ctx.fillRect(barX, barY, BAR_WIDTH, (BAR_HEIGHT * times[i])/maxTime);
   }
 };
